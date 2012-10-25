@@ -83,6 +83,12 @@ set :repository,      "git://github.com/igel84/sravnim-ka.git"
 
 ## --- Ниже этого места ничего менять скорее всего не нужно ---
 
+after "deploy:update_code", :copy_database_config
+  task :copy_database_config, roles => :app do
+    db_config = "#{shared_path}/database.yml"
+    run "cp #{db_config} #{release_path}/config/database.yml"
+end
+
 before 'deploy:finalize_update', 'set_current_release'
 task :set_current_release, :roles => :app do
     set :current_release, latest_release
