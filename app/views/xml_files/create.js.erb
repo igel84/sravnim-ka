@@ -1,0 +1,6 @@
+<% unless @price_list &&  @price_list != [] %>
+  alert('no');
+<% else %>
+  $('.modal').html("<%= j render partial: 'price' %>");
+  $('.modal').modal();
+<% end %>

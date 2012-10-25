@@ -1,0 +1,12 @@
+var text = '';
+<%- Product.all.each do |product|  %>
+  text += "<tr><td>#{product.name}</td>"
+  <%- @prices.each do |key, val| %>
+    <%- unless key.nil? %>
+      text += "<td>#{number_to_currency(ShopProduct.where(shop_id: key, product_id: product.id).first.try(:price), unit: 'p.', separator: ',', format: '%n%u')}</td>"
+    <% end %>
+    text += '</tr>'
+  <% end %>
+<% end %>
+
+$('table.table.table-hover.table-striped').append(text);

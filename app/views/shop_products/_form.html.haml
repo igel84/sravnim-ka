@@ -1,0 +1,21 @@
+:javascript
+  $('.del-item').bind('click', function(){ 
+    $(this).parent().parent().find('.value').val('-');
+    $(this).parent().parent().hide();
+  });
+= form_tag '/prices', remote: true do
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+    %h3 Прайс-лист магазина
+  .modal-body  
+    = hidden_field_tag :type, @type if @type
+    = hidden_field_tag :shop_id, @shop_id if @shop_id
+    = hidden_field_tag :area_id, @area_id if @area_id
+    = hidden_field_tag :city_id, @city_id if @city_id
+    = hidden_field_tag :chain_id, @chain_id if @chain_id
+    = link_to 'добавить товар', new_city_shop_products_path(city: City.find(@city_id)), remote: true, class: 'btn btn-info'
+    %table.table#shop_products{style: "width:200px"}
+      = render @shop_products
+  .modal-footer
+    %a.btn.close-btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Отменить
+    %input.btn.btn-primary{type: "submit", value: "Сохранить прайс"}

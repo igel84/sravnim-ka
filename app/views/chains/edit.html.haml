@@ -1,0 +1,6 @@
+= link_to 'назад', chains_path
+= form_for @chain do |f|
+  = f.text_field :name, placeholder: 'название'
+  = f.text_field :site, placeholder: 'сайт'
+  = f.file_field :logo
+  = f.submit 'сохранить', class: 'btn'

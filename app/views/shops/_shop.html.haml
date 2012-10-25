@@ -1,0 +1,14 @@
+= form_for([@city, @shop], html: {class:"form-inline", style:"margin-left:30px;"}, remote: true) do |f|
+  %label.control-label{:for => "shop_adds"} Редактировать:&nbsp;       
+  = f.text_field :adds, id:'shop_adds', placeholder:"адрес", class:'span5 offset1'
+  = f.text_field :phone, id:'shop_phone', placeholder:"телефон", class:'span3'
+  .btn-group{style:"top:-4px;"  }
+    %button.btn.btn-success{:type => "submit", style: 'width:50px;', title: 'сохранить изменения'}
+      %i.icon-ok.icon-white
+    = link_to [@city, @shop], method: 'delete', confirm: 'вы уверены?', class: 'btn btn-danger btn-pop', style: 'width:20px;', title: 'удалить магазин', remote: true do
+      %i.icon-trash.icon-white
+    = link_to url_for(controller: 'shop_products', action: 'edit', shop_id: @shop.id, city_id: @city.id), class: 'btn', style: 'width:20px;', title: 'просмотр прайса', remote: true do
+      %i.icon-list
+=# form_for [@city, XmlFile.new(shop_id: @shop.id)], html: {style:"padding-top:10px;padding-left:70px;padding-right:90px;"} do |f|
+=#  
+=#%hr/

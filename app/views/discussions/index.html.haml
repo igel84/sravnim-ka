@@ -1,0 +1,60 @@
+:javascript
+  $(document).ready(function() { 
+    $('form#new_discussion').submit(function(){
+      if ( $('form #inputTitle').val() == '' || $('form #inputName').val() == '' || $('form #inputBody').val() == '' )
+      {
+        alert('все поля должны быть заполнены!');
+        return false;
+      }
+    });
+  });
+%legend Вопросы, ответы, обсуждения
+.accordion#accordion1
+  .accordion-group
+    .accordion-heading
+      %a.accordion-toggle{'data-toggle' => "collapse", 'data-parent' => "#accordion1", href: "#collapseOne"} Задать вопрос
+    #collapseOne.accordion-body.collapse
+      .accordion-inner        
+        = form_for Discussion.new, html: {class:'form-horizontal', style: 'margin-bottom:0'}, remote: true do |f|
+          = f.hidden_field :parent_id
+          .control-group{style: 'margin-bottom:2px'}
+            %label.control-label{:for => "inputTitle"} Заголовок
+            .controls
+              = f.text_field :title, id:'inputTitle', placeholder:"Заголовок", class: 'span10'
+          .control-group{style: 'margin-bottom:2px'}
+            %label.control-label{:for => "inputName"} Ваше имя
+            .controls
+              = f.text_field :user_name, id:'inputName', placeholder:"Ваше имя", class: 'span10'
+          .control-group{style: 'margin-bottom:2px'}
+            %label.control-label{:for => "inputBody"} Сообщение
+            .controls
+              = f.text_area :body, class: "span10", placeholder: "Текст сообщения ...", rows: "5", id:'inputBody'
+          = f.submit 'опубликовать', class: "btn btn-large btn-info", style: 'text-align:center;width:300px;margin:8px auto;display:block'
+.clearfix
+.accordion#accordion2
+  .accordion-group
+    - @discussions.each_with_index do |discussion, index|
+      .accordion-heading
+        %a.accordion-toggle{'data-toggle' => "collapse", 'data-parent' => "#accordion2", href: "#collapse#{discussion.id.to_s}", style: 'width:300px;display:inline-block'}= discussion.title
+        - if current_user && current_user.admin? #|| (discussion.user && discussion.user == current_user)))
+          = link_to discussion, class: 'btn btn-danger pull-right', style: 'width:20px;border-radius:0', :confirm => 'Вы уверены?', :method => :delete do
+            %i.icon-trash.icon-white
+        - if current_user && current_user.admin?
+          = link_to edit_discussion_path(discussion), class: 'btn btn-success pull-right', style: 'width:20px;border-radius:0' do
+            %i.icon-edit.icon-white
+        - if current_user && current_user.admin?
+          = link_to change_visible_discussion_path(discussion), class: 'btn pull-right', style: 'width:20px;border-radius:0' do
+            - if discussion.visible == true
+              %i.icon-eye-open
+            - else
+              %i.icon-eye-close
+        - if current_user && current_user.admin?
+          = link_to new_discussion_path(parent_id: discussion.id), style: 'width:20px;border-radius:0', class: 'btn pull-right', title: 'комментировать', rel: 'tooltip', remote: true do
+            %i.icon-comment        
+      %div{id: "collapse#{discussion.id.to_s}", class: "accordion-body collapse #{'in' if index == -1}"}
+        .accordion-inner
+          = discussion.body
+          .pull-right
+            %small.muted= discussion.user_name            
+          = render discussion.children if discussion.children
+.modal.hide.fade

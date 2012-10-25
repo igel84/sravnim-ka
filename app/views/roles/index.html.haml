@@ -1,0 +1,31 @@
+:javascript
+  $(document).ready(function() { 
+    $('#chain.select').chosen();
+    $('.chzn-select-deselect').chosen().change(function() {
+      var id = $(this).val();
+      $.get('/cities/'+id+'/areas.js', function(data){});
+      //document.location.href="/cities/"+id; //http://sravnim-ka.ru
+      //alert('sdf')
+    });
+    $('body').my_upload();
+  });
+= link_to 'назад в управление', edit_user_path(current_user)
+%legend= @user
+= form_for [@user, Role.new] do |f|
+  #shops 
+    - if current_user.admin?
+      .span6= select_tag("chain_id", options_from_collection_for_select(Chain.order('name'), 'id', 'name'), prompt: 'выберите сеть', id: 'chain', class: 'select')
+      %br/
+      %br/    
+    - elsif current_user.has_role? :seller, :any
+      = hidden_field_tag 'chain_id', current_user.roles.find_by_name('seller').resource_id, id: 'chain'
+    .span6= select_tag("city_id", options_from_collection_for_select(City.order('alias'), 'id', 'alias'), prompt: 'выберите город', class: 'chzn-select-deselect chzn-city')
+    .span6.area   
+    %br/ 
+    .span6.shop    
+  = f.submit 'добавить', class: 'btn'
+%table.table
+  - @user.roles.each do |role|
+    %tr
+      %td= role.alias
+      %td= link_to 'удалить', [@user, role], method: :delete

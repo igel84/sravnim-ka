@@ -1,0 +1,8 @@
+# Ignore bundler config
+/config/database.yml
+/public/system
+/public/assets
+/shared
+/.bundle
+/log/*.log
+/tmp

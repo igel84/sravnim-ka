@@ -1,0 +1,5 @@
+$("<%= escape_javascript(render partial:'shop_product', locals: {shop_product: @shop_product}) %>").insertBefore('#shop_products tr:first');
+$('#shop_products tr:first').find('.del-item').bind('click', function(){ 
+  $(this).parent().parent().find('.value').val('-');
+  $(this).parent().parent().hide();
+});

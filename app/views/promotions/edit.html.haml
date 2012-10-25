@@ -1,0 +1,36 @@
+:javascript  
+  $(document).ready(function() { 
+    $('#choose_file').click(function(){ 
+      $("#upfile").click(); 
+      return false; 
+    });
+    $('#upfile').img_upload();
+  });
+.well.well-small  
+  %legend Реклама
+  .container
+    = form_for @promotion, html: {class:'form-horizontal'} do |f|        
+      .row
+        .offset1.span6
+          %script{id:"template-upload", type:"text/x-tmpl"}
+            %div.upload.span2{style: 'display:block;position:relative;top:10px;left:10px;'}
+          = f.file_field :banner, id: 'upfile', style: 'margin-left:-10000px'
+          %button.btn.btn-success.span10#choose_file{onclick: 'getFile();', style: 'margin-bottom: 20px;'}
+            %i.icon-picture
+            выберите файл изображения (размер 130х130px)
+          .input-prepend.span12
+            %span.add-on
+              %i.icon-exclamation-sign
+            = f.text_field :name, id:'inputEmail', placeholder:"название рекламы", class: 'span9', style: 'margin-bottom: 20px;'      
+          .input-prepend.span12
+            %span.add-on
+              %i.icon-map-marker
+            = f.text_field :link, placeholder:"ссылка на сайт", class: 'span9'      
+        .span2
+          #promotion_img= image_tag @promotion.banner.url(:original), class:"img-rounded"
+      %br/
+      .row
+        .offset1.span8#start
+          %button.btn.btn-large.btn-block{type: 'submit'}
+            %i.icon-ok
+            сохранить изменения

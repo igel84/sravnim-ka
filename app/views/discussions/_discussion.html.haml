@@ -1,0 +1,5 @@
+%blockquote.offset1.span10{style: 'margin-top:10px'}
+  %p= discussion.body
+  =# link_to "#{discussion.visible != true ? 'отобразить' : 'скрыть'}", change_visible_discussion_path(discussion), class: 'btn' if current_user && current_user.admin?
+  = link_to 'редактировать', edit_discussion_path(discussion), class: 'btn btn-success' if current_user && current_user.admin?
+  = link_to 'удалить', discussion, class: 'btn btn-danger', :confirm => 'Вы уверены?', :method => :delete if (current_user && (current_user.admin? || (discussion.user && discussion.user == current_user)))

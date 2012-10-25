@@ -1,0 +1,88 @@
+:javascript
+  $(document).ready(function() { 
+    $('.chzn-select').chosen().change(function() {
+      var id = $(this).val();
+      document.location.href="/cities/"+id; //http://sravnim-ka.ru
+      //alert('sdf')
+    });
+    $(".chzn-select-deselect").chosen({allow_single_deselect:true}).change(function() {
+      var id = $(this).val();
+      document.location.href="/cities/#{@city.id}/with_area/"+id#{@chain == nil ? '' : ('with_chain/' + @chain.id.to_s)}; //http://sravnim-ka.ru      
+    });
+    $(".chzn-select-chain").chosen({allow_single_deselect:true}).change(function() {
+      var id = $(this).val();
+      document.location.href="/cities/#{@city.id}/#{@area == nil ? '' : ('with_area/' + @area.id.to_s)}/with_chain/"+id; //http://sravnim-ka.ru      
+    });  
+    $('a').tooltip();
+    var shop_list = [];
+    $('td.shops').each(function(n, element){
+      shop_list.push($(element).attr('id').substr(5));
+    });
+    $.get("/prices.js", { 'ids[]': shop_list} );
+  });
+%legend{style: 'margin-bottom:5px'}
+  Таблица сравнения товаров по магазинам города
+  %br/
+  = select("city", "id", City.all.collect {|p| [ p.name, p.id ] }, {:include_blank => true}, html_options = {class: 'chzn-select', :'data-placeholder' => "#{@city == nil ? 'Выберите город' : @city.name}"})
+  - if @city
+    = select("area", "name", @city.areas.collect {|p| [ p.name, p.id ] }, {:include_blank => true}, html_options = {class: 'chzn-select-deselect', :'data-placeholder' => "#{@area == nil ? 'Выберите район' : @area.name}"})
+  - if @area
+    = select("chain", "name", Chain.all.collect {|p| [ p.name, p.id ] }, {:include_blank => true}, html_options = {class: 'chzn-select-chain', :'data-placeholder' => "#{@chain == nil ? 'Выберите сеть' : @chain.name}"})
+- if current_user && current_user.admin == true && @city != nil && @area != nil && @chain != nil
+  .well{style: "padding:8px;height:30px;margin:0;background:#f9f9f9"}  
+    = form_for([@city, @area, @chain, Shop.new(area_id: @area.id, chain_id: @chain.id)], html: {class:"form-inline"}, remote: true) do |f|
+      = f.hidden_field :area_id
+      = f.hidden_field :chain_id
+      %label.control-label{:for => "shop_adds"} Данные о магазине: 
+      = f.text_field :adds, id:'shop_adds', placeholder:"адрес"
+      = f.text_field :phone, id:'shop_phone', placeholder:"телефон"
+      %button.btn{:type => "submit"} добавить
+  %br/
+  .well#shop_list
+    %legend список магазинов:
+    = render partial: 'cities/shop', collection: Shop.where(area_id: @area.id).where(chain_id: @chain.id).order('created_at DESC')
+.container
+  .row
+    .offset1.span3
+      .btn-group
+        %a.btn.dropdown-toggle{:'data-toggle' => 'dropdown', href: '#'}
+          Выберите район
+          %span.caret
+        %ul.dropdown-menu
+          - Area.all.each do |area|
+            %li= link_to area.name, '#'
+    .span3
+      .btn-group
+        %a.btn.dropdown-toggle{:'data-toggle' => 'dropdown', href: '#'}
+          Выберите район
+          %span.caret
+        %ul.dropdown-menu
+          - Area.all.each do |area|
+            %li= link_to area.name, '#'
+    .span3
+      .btn-group
+        %a.btn.dropdown-toggle{:'data-toggle' => 'dropdown', href: '#'}
+          Выберите район
+          %span.caret
+        %ul.dropdown-menu
+          - Area.all.each do |area|
+            %li= link_to area.name, '#'
+%br/
+%table.table.table-hover.table-striped
+  %tr.success
+    %td &nbsp;
+    - if @temp_shops
+      - @temp_shops.each do |shop|
+        %td.shops{style: 'width:100px;text-align:center;', id:"shop_#{shop.id}"}
+          = link_to shop.name, root_path if shop.name
+          %br/
+          .muted{style: 'font-size:9px'}= link_to truncate(shop.adds, length: 15, ommission: '...'), root_path, title: shop.adds, rel: "tooltip", :'data-placement' => 'right'
+  /- @products.each do |product|
+  /  %tr
+  /    %td= product.name
+  /    - @temp_shops.each do |shop|
+  /      %td= shop.shop_products.where(product_id: product.id).first.price if shop.shop_products.where(product_id: product.id).first
+%br/
+%blockquote.pull-right
+  %p Экономика должна быть экономной
+  %small Л. И. Брежнев

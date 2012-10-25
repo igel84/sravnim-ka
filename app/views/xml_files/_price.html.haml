@@ -1,0 +1,29 @@
+:javascript
+  $(document).ready(function() {
+    $('.del-item').click(function(){      
+      $(this).parent().parent().remove();
+    });
+  });
+= form_tag '/prices', remote: true do
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+    %h3 Загружаемый прайс-лист
+  .modal-body  
+    = hidden_field_tag :type, @type if @type
+    = hidden_field_tag :shop_id, @shop_id if @shop_id
+    = hidden_field_tag :area_id, @area_id if @area_id
+    = hidden_field_tag :city_id, @city_id if @city_id
+    = hidden_field_tag :chain_id, @chain_id if @chain_id
+    %table.table
+      - @price_list.each do |price|
+        %tr
+          = hidden_field_tag 'price[][product_id]', price.product_id
+          %td
+            %label= Product.find(price.product_id).name
+          %td= text_field_tag 'price[][name]', price.name, class: 'input-large', style: 'margin-top:-3px'
+          %td= text_field_tag 'price[][volume]', price.volume, class: 'input-mini', style: 'margin-top:-3px'
+          %td= text_field_tag 'price[][count]', price.count, class: 'input-mini', style: 'margin-top:-3px'
+          %td= link_to 'удалить', '#', class: 'del-item'
+  .modal-footer
+    %a.btn.close-btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Отменить
+    %input.btn.btn-primary{type: "submit", value: "Сохранить прайс"}

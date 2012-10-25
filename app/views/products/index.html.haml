@@ -1,0 +1,16 @@
+= form_for Product.new do |f|
+  %label новый продукт
+  = f.text_field :name, placeholder: 'название'
+  = f.text_field :unit, placeholder: 'ед.измерения'
+  = f.submit 'создать', class: 'btn'
+%table.table
+  - @products.each do |product|
+    %tr
+      %td= product.name
+      %td= product.unit
+      %td
+        = link_to edit_product_path(product), class: 'btn btn-success btn-pop', style: 'width:20px;', title: 'редактировать' do
+          %i.icon-edit.icon-white
+      %td
+        = link_to product, method: 'delete', confirm: 'вы уверены?', class: 'btn btn-danger btn-pop', style: 'width:20px;', title: 'удалить продукт' do
+          %i.icon-trash.icon-white

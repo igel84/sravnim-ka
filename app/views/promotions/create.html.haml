@@ -1,0 +1,14 @@
+.well
+  %legend Реклама успешно создана!
+  %p{style: 'text-align:center'} Для того, чтобы начались показы Вашей рекламы, Вам необходимо внести плату на 
+  %p{style: 'text-align:center'}
+    %span.badge.badge-info{style: 'font-size:17px'} QIWY-кошелек 9050518868
+  %p{style: 'text-align:center'} В комментариях к платежу обязательно укажите идентификационный номер 
+  %p{style: 'text-align:center'}
+    %span.badge.badge-info{style: 'font-size:17px'}= @promotion.key
+  %legend &nbsp;
+  %p{style: 'text-align:center'} Стоимость 1 показа рекламы составляет 10 копеек
+  %p{style: 'text-align:center'}
+    %small (минимальная сумма, которую Вы должны внести для начала показов - 100 рублей)
+  %legend &nbsp;
+  %p{style: 'text-align:center'}= link_to 'к общему списку реклам', promotions_path

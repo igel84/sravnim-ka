@@ -1,0 +1,17 @@
+%legend
+  = @product.name
+  %small= link_to 'назад к таблице цен', :back, class: 'pull-right'
+%table.table.table-bordered
+  %tr
+    %th{style: 'text-align:center'} Сеть / магазин
+    %th{style: 'text-align:center'} Название сорта / марка
+    %th{style: 'text-align:center'} Количество
+    %th{style: 'text-align:center'} Цена
+  - @shop_products.each do |shop_product|
+    %tr
+      %td{style: 'background-color:#DFF0D8'}= shop_product.shop.chain.name
+      %td{rowspan: 2, style: 'text-align:center;vertical-align:middle;width:200px'}= shop_product.name
+      %td{rowspan: 2, style: 'text-align:center;vertical-align:middle;width:100px'}= shop_product.volume.to_s + ' ' + @product.unit
+      %td{rowspan: 2, style: 'text-align:center;vertical-align:middle;width:100px'}= number_to_currency(shop_product.price, unit: 'p.', separator: ',', format: "%n%u")
+    %tr
+      %td= link_to  shop_product.shop.adds, [@current_city, shop_product.shop], title: 'подробнее о магазине ...', rel: "tooltip", :'data-placement' => 'right'

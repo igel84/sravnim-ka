@@ -1,0 +1,7 @@
+<% if @promotion.new_record? %>
+  alert("Ошибка загрузки файла: <%= j @promotion.errors.full_messages.join(', ').html_safe %>");
+<% else %>
+  $('form').append("<%= j hidden_field_tag 'promotion[id]', @promotion.id %>");
+  $("#promotion_img").html("<%= j image_tag(@promotion.banner.url(:original)).html_safe %>");
+  $("#start").html("<%= j render('start_link').html_safe %>");
+<% end %>

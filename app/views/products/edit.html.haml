@@ -1,0 +1,6 @@
+= link_to 'назад', products_path
+= form_for @product do |f|
+  %label продукт
+  = f.text_field :name, placeholder: 'название'
+  = f.text_field :unit, placeholder: 'ед.измерения'
+  = f.submit 'сохранить', class: 'btn'

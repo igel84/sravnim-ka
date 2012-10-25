@@ -1,0 +1,28 @@
+= form_for @discussion do |f|
+  -if @discussion.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@discussion.errors.count, "error")} prohibited this discussion from being saved:"
+      %ul
+        - @discussion.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :parent_id
+    = f.number_field :parent_id
+  .field
+    = f.label :visible
+    = f.check_box :visible
+  .field
+    = f.label :body
+    = f.text_area :body
+  .field
+    = f.label :user_id
+    = f.number_field :user_id
+  .field
+    = f.label :user_name
+    = f.text_field :user_name
+  .actions
+    = f.submit 'Save'

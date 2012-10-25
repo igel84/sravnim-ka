@@ -1,0 +1,27 @@
+= form_for @user, html: {class:'form-horizontal'} do |f|
+  %legend Регистрация
+  - if @user.errors.any?  
+    .error_messages
+      %h3 Ошибка регистрации
+      %ul
+        - for message in @user.errors.full_messages
+          %li= message
+  .control-group
+    %label.control-label{:for => "inputEmail"} Email
+    .controls
+      = f.text_field :email, id:'inputEmail', placeholder:"Email"      
+  .control-group
+    %label.control-label{:for => "inputCity"} Город
+    .controls
+      = select_tag "user[city_id]", options_from_collection_for_select(City.all, "id", "name"), :prompt => "выберите город"
+  .control-group
+    %label.control-label{:for => "inputPassword"} Пароль
+    .controls
+      = f.password_field :password, id:'inputPassword', placeholder:"Пароль"
+  .control-group
+    %label.control-label{:for => "inputPasswordConfirm"} Пароль еще раз
+    .controls
+      = f.password_field :password_confirmation, id:'inputPasswordConfirm', placeholder:"Повторите пароль"      
+  .control-group
+    .controls
+      = f.submit 'Зарегистрировать', class:'btn'

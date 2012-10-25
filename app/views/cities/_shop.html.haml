@@ -1,0 +1,9 @@
+= form_for([@city, @area, @chain, shop], html: {class:"form-inline", style:"margin:0;"}, remote: true) do |f|        
+  .controlls          
+    = f.text_field :adds, id:'shop_adds', placeholder:"адрес", class:'span5', style:"margin-top:8px;"
+    = f.text_field :phone, id:'shop_phone', placeholder:"телефон", class:'span3', style:"margin-top:8px;"
+    .btn-group
+      %button.btn.btn-success{:type => "submit", style: 'width:60px;', title: 'сохранить изменения'}
+        %i.icon-ok.icon-white
+      = link_to [@city, @area, @chain, shop], method: 'delete', remote: true, confirm: 'вы уверены?', class: 'btn btn-danger btn-pop', style: 'width:30px;', title: 'удалить магазин' do
+        %i.icon-trash.icon-white

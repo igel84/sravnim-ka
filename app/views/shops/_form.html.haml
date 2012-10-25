@@ -1,0 +1,7 @@
+= form_for([@current_city, Shop.new(area_id:  @area.id, chain_id: @chain_id)], html: {class:"form-inline", style: "margin-left:30px;"}, remote: true) do |f|
+  = f.hidden_field :area_id
+  = f.hidden_field :chain_id
+  %label.control-label{:for => "shop_adds"} Новый магазин:&nbsp;&nbsp;&nbsp;
+  = f.text_field :adds, id:'shop_adds', placeholder:"адрес", class:'span5 offset1'
+  = f.text_field :phone, id:'shop_phone', placeholder:"телефон", class:'span3'
+  %button.btn{:type => "submit"} добавить

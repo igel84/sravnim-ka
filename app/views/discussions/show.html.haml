@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @discussion.title
+%p
+  %b Parent:
+  = @discussion.parent_id
+%p
+  %b Visible:
+  = @discussion.visible
+%p
+  %b Body:
+  = @discussion.body
+%p
+  %b User:
+  = @discussion.user_id
+%p
+  %b User name:
+  = @discussion.user_name
+
+= link_to 'Edit', edit_discussion_path(@discussion)
+\|
+= link_to 'Back', discussions_path

@@ -1,0 +1,33 @@
+.span11.well
+  .row
+    .offset1.span3
+      - if @shop.chain.site
+        %a{href: @shop.chain.site[0, 7] == 'http://' ? @shop.chain.site : 'http://' + @shop.chain.site, class:"thumbnail"}
+          = image_tag(@shop.chain.logo(:thumb), alt: '')
+      - else
+        %a{href: '#', class:"thumbnail"}
+          = image_tag(@shop.chain.logo(:thumb), alt: '')
+    .span7
+      %strong
+        %p{style: 'color:#3A87AD;'}
+          = @shop.area.name
+          = ' район'
+        %p
+          = @shop.adds
+      - if @shop.real_price == true
+        %span.badge.badge-warning real
+      -#%span.badge.badge-info 15 followers
+.clear
+%table.table
+  %tr
+    %th{style: 'text-align:center'} Тип
+    %th{style: 'text-align:center'} Название
+    %th{style: 'text-align:center'} Количество
+    %th{style: 'text-align:center'} Цена
+  - @shop.shop_products.order('product_id').each do |sh_pr|
+    %tr
+      - product = Product.find(sh_pr.product_id)
+      %td{style: 'width:200px'}= product.name
+      %td{style: 'width:300px'}= sh_pr.name
+      %td{style: 'text-align:center'}= sh_pr.volume.to_s + ' ' + product.unit
+      %td{style: 'text-align:center'}= number_to_currency(sh_pr.price, unit: 'p.', separator: ',', format: "%n%u")

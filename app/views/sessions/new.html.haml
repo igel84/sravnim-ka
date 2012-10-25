@@ -1,0 +1,20 @@
+= form_tag sessions_path, class:'form-horizontal' do
+  %legend Вход
+  .control-group
+    %label.control-label{:for => "inputEmail"} Email
+    .controls
+      = text_field_tag :email, params[:email], id:'inputEmail', placeholder:"Email"      
+  .control-group
+    %label.control-label{:for => "inputPassword"} Пароль
+    .controls
+      = password_field_tag :password, '', id:'inputPassword', placeholder:"Пароль"
+      = link_to 'Забыли пароль?', new_password_reset_path, class:'btn btn-link'
+  .control-group
+    .controls
+      %label.checkbox
+        = check_box_tag :remember_me, 1, params[:remember_me]
+        Запомнить
+      %br/
+      %button.btn.btn-success{:type => "submit"} Вход
+      = link_to 'Регистрация', signup_path, class:'btn'
+      

@@ -1,0 +1,18 @@
+<%- if @prices %>
+  $('table.table.table-hover.table-striped').append('<%= (@prices).html_safe %>');
+<% end %>
+
+$('.popover-text').popover({'trigger': 'manual'});
+$('.popover-text').live({
+        mouseenter:
+           function()
+           {
+              $(this).popover('show');
+           },
+        mouseleave:
+           function()
+           {
+              $(this).popover('hide');
+           }
+       }
+    );

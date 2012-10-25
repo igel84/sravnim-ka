@@ -1,0 +1,89 @@
+!!!
+%html
+  %head
+    %title Сравним-ка
+    %meta{:charset=>"utf-8"}
+    %meta{:name=>"description", :content=>"сравнение цен на продовольственные товары #{@current_city.alias if @current_city}"}
+    %meta{:name=>"keywords", :content=>"цены сравнить товар #{@current_city.alias if @current_city}"}
+    %meta{:name=>"author", :content=>"mlip.ru"}
+    %link{:rel=>"shortcut icon", :href=>'/assets/favicon.ico'}
+    = stylesheet_link_tag    "application"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .container
+      .row
+        .span12
+          .navbar.navbar-static-top
+            .navbar-inner
+              .container
+                %a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
+                  %span.icon-bar
+                  %span.icon-bar
+                  %span.icon-bar
+                = link_to "Сравним-ка", url_for(controller: 'cities', action: 'index', subdomain: false), class: 'brand'
+                %ul.nav
+                  %li.divider-vertical
+                  %li.dropdown
+                    %a.dropdown-toggle{:"data-toggle" => "dropdown", :href => "#"}
+                      = @current_city == nil ? 'Выберите город' : @current_city.alias
+                      %b.caret
+                    %ul.dropdown-menu
+                      - City.all.each do |city|
+                        %li
+                          = link_to city.alias, root_url(subdomain: city.name)
+                  %li.divider-vertical
+                  %li{class: "#{controller_name == 'cities' && action_name == 'index' ? 'active' : ''}"}
+                    = link_to 'главная', url_for(controller: 'cities', action: 'index', subdomain: false)
+                  %li.divider-vertical
+                  %li= link_to 'ответы на вопросы', discussions_path, title: 'Вопросы, ответы, обсуждения', rel: "tooltip", :'data-placement' => 'right'
+                  %li.divider-vertical
+                %ul.nav.pull-right
+                  %li.divider-vertical
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Личный кабинет
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_user
+                        %li
+                          = link_to edit_user_path(current_user) do
+                            %i.icon-user
+                            профиль
+                        -#%li
+                        -#  = link_to '' do
+                        -#    %i.icon-envelope
+                        -#    подписка
+                        %li
+                          = link_to promotions_path do
+                            %i.icon-eye-open
+                            реклама
+                        -#%li
+                        -#  = link_to '' do
+                        -#   %i.icon-globe
+                        -#    друзья
+                        %li
+                          = link_to logout_path do
+                            %i.icon-remove-circle
+                            выход                         
+                      - else
+                        %li= link_to "вход", login_path
+                        %li= link_to "регистрация", signup_path  
+      .row
+        .span12= image_tag 'top.jpg', width:940, hight:80
+      .row-fluid   
+        .span10
+          %br/
+          - flash.each do |name, msg|
+            = content_tag :div, msg, class:"alert alert-info"
+          = yield          
+        .span2
+          - @active_promotions.each do |promotion|
+            %br/
+            %a{href: promotion.link, target:'_blank', title: promotion.name, rel: "tooltip", :'data-placement' => 'right'}
+              = image_tag(promotion.banner.url(:original), class:"img-rounded")
+            %br/
+    %footer.footer
+      .container
+        %p.pull-right
+          = mail_to 'support@sravnim-ka.ru', 'поддержка сайта', encode: "javascript", 'data-placement' => 'top', title: 'написать письмо'

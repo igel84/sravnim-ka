@@ -1,0 +1,7 @@
+%legend Восстановление пароля
+%p.muted Если вы забыли пароль, вы можете ввести свой адрес электронной почты, указанный при регистрации. Вам будет выслана инструкция по смене пароля.
+%br/
+= form_tag password_resets_path, :method => :post, class:'form-inline', style:'text-align:center' do
+  %label.control-label{:for => "inputEmail"} Адрес электронной почты: 
+  = text_field_tag :email, '', id:'inputEmail', placeholder:"Email"      
+  %button.btn{:type => "submit"} Отправить

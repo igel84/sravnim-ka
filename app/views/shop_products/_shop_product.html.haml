@@ -1,0 +1,9 @@
+%tr
+  =# hidden_field_tag 'price[][product_id]', sh_pr.product_id
+  %td= select_tag "price[][product_id]", options_from_collection_for_select(Product.all, "id", "name", selected: shop_product.product_id), :prompt => shop_product.product_id == nil ? 'выберите продукт' : Product.find(shop_product.product_id).name, style: 'margin-top:-3px;width:150px'
+  %td= text_field_tag 'price[][name]', shop_product.name, class: 'input-large', style: 'margin-top:-3px;width:150px'
+  %td= text_field_tag 'price[][volume]', shop_product.volume, class: 'input-mini', style: 'margin-top:-3px;width:40px;'
+  %td= text_field_tag 'price[][count]', shop_product.price, class: 'input-mini value', style: 'margin-top:-3px;width:40px'
+  %td
+    = link_to '#', class: 'del-item btn btn-danger', style:"margin-top:-3px;" do
+      %i.icon-trash.icon-white

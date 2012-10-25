@@ -1,0 +1,20 @@
+%p.muted Укажите новый пароль для пользователя с электронным адресом #{@user.email}
+%br/
+= form_for @user, :url => password_reset_path(@user), :html => {:method => :put, class:'form-horizontal'} do |f|
+  - if @user.errors.any?
+    #error_explanation
+      %ul
+        - @user.errors.full_messages.each do |msg|
+          %li= msg
+  .control-group
+    %label.control-label{:for => "inputPassword"} Пароль
+    .controls
+      = password_field_tag :password, '', id:'inputPassword', placeholder:"Пароль"
+  .control-group
+    %label.control-label{:for => "inputPasswordConfirm"} Пароль еще раз
+    .controls
+      = password_field_tag :password_confirmation, '', id:'inputPasswordConfirm', placeholder:"Повторите пароль"
+      = hidden_field_tag :token, @token
+      %br/
+      %br/
+      = f.submit 'Сохранить пароль', class:'btn'

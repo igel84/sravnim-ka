@@ -1,0 +1,47 @@
+= link_to 'добавить рекламу', new_promotion_path, class: 'btn btn-large btn-block btn-success', type: 'button'
+- if current_user.admin?
+  = form_tag search_promotions_path, method: 'post', class: 'form-search pull-right', style: 'display: block;margin: 10px auto;width:400px;' do
+    %input{type: "text", class:"input-medium search-query", name: 'key'}
+    %button{type: "submit", class: "btn"} найти
+%table.table
+  - @promotions.each do |promotion|
+    %tr
+      %td{style: 'width: 140px;text-align:center;'}= image_tag(promotion.banner.url(:original)) if promotion.banner
+      %td
+        - if promotion.active == true
+          %span.label.label-success активна
+          %br/          
+        - elsif promotion.active == false
+          %span.label.label-important не активна
+          %br/                  
+        %span.label{style: 'width:100px;display:inline-block;text-align:center'} название
+        %small= promotion.name
+        %br/
+        %span.label{style: 'width:100px;display:inline-block;text-align:center'} ссылка
+        %small= promotion.link
+        %br/
+        %span.label{style: 'width:100px;display:inline-block;text-align:center'} информация
+        %small= promotion.info == nil ? 'ожидает оплаты' : promotion.info
+        %br/
+        %span.label{style: 'width:100px;display:inline-block;text-align:center'} баланс
+        %small= number_to_currency(promotion.balance.to_f / 10, unit: 'p.', separator: ',', format: "%n%u")
+        %br/
+        %span.label{style: 'width:100px;display:inline-block;text-align:center'} платежный код
+        %span.label.label-important{style: 'display:inline-block;text-align:center', rel: 'tooltip', title: 'данный код нужно указать в комментариях к платежу на QIWI-кошелек 9050518868'}= promotion.key        
+      - if current_user.admin?
+        %td{style: 'width:150px;padding-top:24px'}
+          = form_for promotion, class: 'form-inline' do |f|
+            = f.text_field :info, class: 'span12'
+            %br/
+            = text_field_tag 'promotion[balance]', (promotion.balance.to_f / 10), class: 'span7'
+            = f.check_box :active, style: 'margin-top:-10px'
+            %button{type: "submit", class: "btn", style: 'margin-top:-8px'}
+              %i.icon-save
+      %td{style: 'width:80px;text-align:center;'}        
+        = link_to edit_promotion_path(promotion), title: 'изменить рекламу', rel: 'tooltip', class: 'btn btn-large', style: 'width:20px;margin-top:4px' do
+          %i.icon-edit
+        %br/
+        %br/
+        = link_to promotion, method: :delete, confirm: 'вы действительно хотите удалить рекламу?', title: 'удалить рекламу', rel: 'tooltip', class: 'btn btn-danger btn-large', style: 'width:20px' do
+          %i.icon-trash
+        

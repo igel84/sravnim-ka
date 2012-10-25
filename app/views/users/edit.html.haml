@@ -1,0 +1,120 @@
+:javascript
+  //function getFile(){ document.getElementById("upfile").click(); }
+  $(document).ready(function() { 
+    $('#add-price').click(function(){ $('#upfile').click(); });
+    $('.chzn-chains').chosen();
+    $('.chzn-select-deselect').chosen().change(function() {
+      var id = $(this).val();
+      $.get('/cities/'+id+'/areas.js', function(data){});
+      //document.location.href="/cities/"+id; //http://sravnim-ka.ru
+      //alert('sdf')
+    });
+    $('body').my_upload();    
+  });
+= form_for @user, html: {class:'form-horizontal'} do |f|
+  .well.well-small  
+    %legend Общая информация
+    .control-group
+      %label.control-label{:for => "inputEmail"} Email
+      .controls
+        = f.text_field :email, id:'inputEmail', placeholder:"Email", class: 'span8'      
+    .control-group
+      %label.control-label{:for => "inputCity"} Город
+      .controls
+        = select_tag "user[city_id]", options_from_collection_for_select(City.all, "id", "alias"), :prompt => @user.city_id != nil ? @user.city.name : 'выберите город', class: 'span8'    
+        = f.submit 'сохранить', class:'btn pull-right'
+  .well.well-small
+    %legend Смена пароля
+    .control-group
+      %label.control-label{:for => "inputPasswordOld"} Старый пароль
+      .controls
+        = password_field_tag 'old_password', '', id:'inputPasswordOld', placeholder:"Старый пароль", class: 'span8'
+    .control-group
+      %label.control-label{:for => "inputPassword"} Новый пароль
+      .controls
+        = f.password_field :password, id:'inputPassword', placeholder:"Новый пароль", class: 'span8'
+    .control-group
+      %label.control-label{:for => "inputPasswordConfirm"} Пароль еще раз
+      .controls
+        = f.password_field :password_confirmation, id:'inputPasswordConfirm', placeholder:"Повторите пароль", class: 'span8'
+        = f.submit 'сохранить', class:'btn pull-right'
+- if current_user.admin?
+  .well.well-small
+    %legend 
+      Пользователи и роли
+    %table.table
+      - @users.each do |user|
+        %tr
+          %td= user
+          %td= user.chain.name if user.seller?
+          %td= link_to 'изменить аккаунт', edit_user_path(user)
+          %td= link_to 'изменить роли', [user, :roles]
+- if current_user.admin?
+  .well.well-small
+    %p
+      = link_to 'продукты', products_path, class: 'btn btn-success'
+      = link_to 'сети', chains_path, class: 'btn btn-success'
+- if current_user.admin?
+  .modal.hide.fade    
+  %script    
+    jQuery.fn.shop_choise = function(event, data){ 
+    $('.chzn-shops').change(function() {
+    var id = $(this).val();
+    var city_id = $('.chzn-city').val();
+    $.get('/cities/'+city_id+'/shops/'+id+'/edit.js', function(data){});
+    });}
+  .well.well-small
+    %legend 
+      Магазины и прайс-листы
+      %small.pull-right= link_to 'скачать шаблон', '/price.xls'   
+    .container
+      .row
+        .offset1.span4
+          = image_tag('excel.png')
+          %button#add-price.btn{onclick: "getFile();"} добавить прайс сети
+          %script{id:"template-upload", type:"text/x-tmpl"}
+            %div.upload.span2{style: 'display:block;position:relative;top:10px;left:10px;'}
+        .span4
+          = form_for [@user, XmlFile.new] do |f|  
+            #shops 
+              - if current_user.admin?
+                .span6= select_tag("chain_id", options_from_collection_for_select(Chain.order('name'), 'id', 'name'), :include_blank => true, :'data-placeholder' =>  'выберите сеть', id: 'chain', class: 'select chzn-chains')
+                %br/
+                %br/    
+              - elsif current_user.has_role? :seller, :any
+                = hidden_field_tag 'chain_id', current_user.roles.find_by_name('seller').resource_id, id: 'chain'
+              .span6= select_tag("city_id", options_from_collection_for_select(City.order('alias'), 'id', 'alias'), :include_blank => true, :'data-placeholder' => 'Выберите город', class: 'chzn-select-deselect chzn-city')
+              .span6.area   
+              %br/ 
+              .span6.shop    
+            %br/
+            %br/
+            .file-btn{style: 'position:absolute;left:-10000px;'}
+              = f.file_field :attach, name: "xml_file[attach]", class: 'btn btn-mini new_xml_file', id: 'upfile'      
+      %br/
+      .row
+        .span10
+          .price{style:'clear:both'}           
+/- if current_user && (current_user.admin? || current_user.seller?)
+/  .well.well-small#shops
+/    %legend Магазины и прайсы
+/    - if current_user.seller?
+/      %label
+/        Сеть магазинов: 
+/        = current_user.chain
+/    .row
+/      = form_for XmlFile.new(chain_id: current_user.chain.id), html: {style:"padding-top:10px;padding-left:70px;padding-right:90px;"} do |f|
+/        .controlls 
+/          = f.hidden_field :chain_id
+/          %label.control-label{:for => "xml_file_attach", style: 'display:inline'} Добавить общий прайс сети:&nbsp;&nbsp;&nbsp;
+/          = f.file_field :attach, name: "xml_file[attach]", class: 'btn btn-mini new_xml_file'
+/        %script{id:"template-upload", type:"text/x-tmpl"}
+/          %div.upload
+/            {%=o.name%}
+/            %div.progress
+/              %div.bar{style:"width: 0%"}
+/      .offset2.span4= select_tag("city[id]", options_from_collection_for_select(City.all, 'id', 'name'), prompt: 'выберите город', class: 'chzn-select-/deselect')
+/      .span4.area  
+/    %hr/
+/    .new_form
+/    .shops
