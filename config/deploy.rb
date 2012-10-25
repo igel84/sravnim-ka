@@ -31,7 +31,7 @@ ssh_options[:forward_agent] = true
 
 # Имя вашего проекта в панели управления.
 # Не меняйте это значение без необходимости, оно используется дальше.
-set :application,     "sravni"
+set :application,     "sravnim-ka"
 
 # Сервер размещения проекта.
 set :deploy_server,   "lithium.locum.ru"
@@ -66,7 +66,7 @@ set :scm,             :git
 # домашнем каталоге в подкаталоге git/<имя проекта>.git.
 # Подробнее о создании репозитория читайте в нашем блоге
 # http://locum.ru/blog/hosting/git-on-locum
-set :repository,      "git://github.com/igel84/sravni.git"
+set :repository,      "git://github.com/igel84/sravnim-ka.git"
 
 ## Если ваш репозиторий в GitHub, используйте такую конфигурацию
 # set :repository,    "git@github.com:username/project.git"
@@ -97,11 +97,11 @@ set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do
 
 #stop
 #bundle install --path ../../shared/gems
-#[ -f "/var/run/unicorn/sravni.igel84.pid" ] && kill -QUIT `cat "/var/run/unicorn/sravni.igel84.pid"`
+#[ -f "/var/run/unicorn/sravnim-ka.igel84.pid" ] && kill -QUIT `cat "/var/run/unicorn/sravnim-ka.igel84.pid"`
 #start
 #!!!!! current dir name
-#ln -s /home/hosting_igel84/projects/sravni/releases/20121023102422 /home/hosting_igel84/projects/sravni/current;cd /home/hosting_igel84/projects/sravni/current
-#bundle exec unicorn_rails -Dc "/etc/unicorn/sravni.igel84.rb"
+#ln -s /home/hosting_igel84/projects/sravnim-ka/releases/20121023102422 /home/hosting_igel84/projects/sravnim-ka/current;cd /home/hosting_igel84/projects/sravnim-ka/current
+#bundle exec unicorn_rails -Dc "/etc/unicorn/sravnim-ka.igel84.rb"
 
 # - for unicorn - #
 namespace :deploy do
