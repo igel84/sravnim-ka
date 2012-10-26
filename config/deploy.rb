@@ -1,44 +1,11 @@
-# По умолчанию для дистрибуции проектов используется Bundler.
-# Эта строка включает автоматическое обновление и установку
-# недостающих gems, указанных в вашем Gemfile.
-#
-## !!! Не забудьте добавить
-# gem 'capistrano'
-# gem 'unicorn'
-#
-# в ваш Gemfile.
-#
-# Если вы используете другую систему управления зависимостями,
-# закомментируйте эту строку.
 require 'bundler/capistrano'
-
-# В rails 3 по умолчанию включена функция assets pipelining,
-# которая позволяет значительно уменьшить размер статических
-# файлов css и js.
-# Эта строка автоматически запускает процесс подготовки
-# сжатых файлов статики при деплое.
-# Если вы не используете assets pipelining в своем проекте,
-# или у вас старая версия rails, закомментируйте эту строку.
 load 'deploy/assets'
 
-# Для удобства работы мы рекомендуем вам настроить авторизацию
-# SSH по ключу. При работе capistrano будет использоваться
-# ssh-agent, который предоставляет возможность пробрасывать
-# авторизацию на другие хосты.
-# Если вы не используете авторизацию SSH по ключам И ssh-agent,
-# закомментируйте эту опцию.
 ssh_options[:forward_agent] = true
 
-# Имя вашего проекта в панели управления.
-# Не меняйте это значение без необходимости, оно используется дальше.
 set :application,     "sravnim-ka"
-
-# Сервер размещения проекта.
 set :deploy_server,   "lithium.locum.ru"
-
-# Не включать в поставку разработческие инструменты и пакеты тестирования.
 set :bundle_without,  [:development, :test]
-
 set :user,            "hosting_igel84"
 set :login,           "igel84"
 set :use_sudo,        false
@@ -49,44 +16,33 @@ set :bundle_dir,      File.join(fetch(:shared_path), 'gems')
 role :web,            deploy_server
 role :app,            deploy_server
 role :db,             deploy_server, :primary => true
-
-
-# Следующие строки необходимы, т.к. ваш проект использует rvm.
 set :rvm_ruby_string, "1.9.3"
 set :rake,            "rvm use #{rvm_ruby_string} do bundle exec rake" 
 set :bundle_cmd,      "rvm use #{rvm_ruby_string} do bundle"
-
-
-# Настройка системы контроля версий и репозитария,
-# по умолчанию - git, если используется иная система версий,
-# нужно изменить значение scm.
 set :scm,             :git
-
-# Предполагается, что вы размещаете репозиторий Git в вашем
-# домашнем каталоге в подкаталоге git/<имя проекта>.git.
-# Подробнее о создании репозитория читайте в нашем блоге
-# http://locum.ru/blog/hosting/git-on-locum
 set :repository,      "git://github.com/igel84/sravnim-ka.git"
 
-## Если ваш репозиторий в GitHub, используйте такую конфигурацию
-# set :repository,    "git@github.com:username/project.git"
+before "deploy:assets:precompile", :remove_paths, :set_links
+after "deploy:update_code", :do_migrations
 
-## Чтобы не хранить database.yml в системе контроля версий, поместите
-## dayabase.yml в shared-каталог проекта на сервере и раскомментируйте
-## следующие строки.
+task :remove_paths, roles => :app do
+  run "rm -rf #{release_path}/tmp"
+end
 
-# after "deploy:update_code", :copy_database_config
-# task :copy_database_config, roles => :app do
-#   db_config = "#{shared_path}/database.yml"
-#   run "cp #{db_config} #{release_path}/config/database.yml"
-# end
+task :set_links, roles => :app do
+  links = {
+    '/ckeditor_assets' => '/public/ckeditor_assets',
+    '/uploads' => '/public/uploads',
+    '/config/database.yml' => '/config/database.yml'
+  }
+  links.each do |from, destination|
+    run "rm -rf #{release_path}#{destination}"
+    run "ln -s #{shared_path}#{from} #{release_path}#{destination}"
+  end
+end
 
-## --- Ниже этого места ничего менять скорее всего не нужно ---
-
-after "deploy:update_code", :copy_database_config
-  task :copy_database_config, roles => :app do
-    db_config = "#{shared_path}/config/database.yml"
-    run "cp #{db_config} #{release_path}/config/database.yml"
+task :do_migrations, roles => :app do
+  run "cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec rake RAILS_ENV=production db:migrate"
 end
 
 before 'deploy:finalize_update', 'set_current_release'
@@ -94,12 +50,42 @@ task :set_current_release, :roles => :app do
     set :current_release, latest_release
 end
 
+set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec unicorn_rails -Dc #{unicorn_conf})"
+
+namespace :deploy do
+  desc "Start application"
+  task :start, :roles => :app do
+    run unicorn_start_cmd
+  end
+
+  desc "Stop application"
+  task :stop, :roles => :app do
+    run "[ -f #{unicorn_pid} ] && kill -QUIT `cat #{unicorn_pid}`"
+  end
+
+  desc "Restart Application"
+  task :restart, :roles => :app do
+    run "[ -f #{unicorn_pid} ] && kill -USR2 `cat #{unicorn_pid}` || #{unicorn_start_cmd}"
+  end
+end
+
+#after "deploy:update_code", :copy_database_config
+#  task :copy_database_config, roles => :app do
+#    db_config = "#{shared_path}/config/database.yml"
+#    run "cp #{db_config} #{release_path}/config/database.yml"
+#end
+
+#before 'deploy:finalize_update', 'set_current_release'
+#task :set_current_release, :roles => :app do
+#    set :current_release, latest_release
+#end
+
 #before "deploy:assets:precompile" do
 #  run ["ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"].join(" && ")
 #end
 
 #set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec unicorn_rails -Dc #{unicorn_conf})"
-set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec unicorn_rails -Dc #{unicorn_conf})" #;bundle install --path ../../shared/gems;bundle exec rake db:migrate RAILS_ENV=production;bundle exec unicorn_rails -Dc #{unicorn_conf})"
+#set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do bundle exec unicorn_rails -Dc #{unicorn_conf})" #;bundle install --path ../../shared/gems;bundle exec rake db:migrate RAILS_ENV=production;bundle exec unicorn_rails -Dc #{unicorn_conf})"
 
 #stop
 #bundle install --path ../../shared/gems
@@ -110,22 +96,22 @@ set :unicorn_start_cmd, "(cd #{deploy_to}/current; rvm use #{rvm_ruby_string} do
 #bundle exec unicorn_rails -Dc "/etc/unicorn/sravnim-ka.igel84.rb"
 
 # - for unicorn - #
-namespace :deploy do
-  desc "Start application"
-  task :start, :roles => :app do
-    run unicorn_start_cmd
-  end
+#namespace :deploy do
+#  desc "Start application"
+#  task :start, :roles => :app do
+#    run unicorn_start_cmd
+#  end
 
-  desc "Stop application"
-  task :stop, :roles => :app do
-    run "[ -f #{unicorn_pid} ] && kill -QUIT `cat #{unicorn_pid}`"
-    #[ -f /var/run/unicorn/mgtender.igel84.pid ] && kill -QUIT `cat /var/run/unicorn/mgtender.igel84.pid`
-    #start
-    #bundle exec unicorn_rails -Dc /etc/unicorn/mgtender.igel84.rb
-  end
+#  desc "Stop application"
+#  task :stop, :roles => :app do
+#    run "[ -f #{unicorn_pid} ] && kill -QUIT `cat #{unicorn_pid}`"
+#    #[ -f /var/run/unicorn/mgtender.igel84.pid ] && kill -QUIT `cat /var/run/unicorn/mgtender.igel84.pid`
+#    #start
+#    #bundle exec unicorn_rails -Dc /etc/unicorn/mgtender.igel84.rb
+#  end
 
-  desc "Restart Application"
-  task :restart, :roles => :app do
-    run "[ -f #{unicorn_pid} ] && kill -USR2 `cat #{unicorn_pid}` || #{unicorn_start_cmd}"
-  end
-end
+# desc "Restart Application"
+#  task :restart, :roles => :app do
+#    run "[ -f #{unicorn_pid} ] && kill -USR2 `cat #{unicorn_pid}` || #{unicorn_start_cmd}"
+#  end
+#end
