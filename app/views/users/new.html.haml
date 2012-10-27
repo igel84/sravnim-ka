@@ -7,6 +7,7 @@
         - for message in @user.errors.full_messages
           %li= message
   .control-group
+    = hidden_field_tag 'photo_price', params[:photo_price] if params[:photo_price]
     %label.control-label{:for => "inputEmail"} Email
     .controls
       = f.text_field :email, id:'inputEmail', placeholder:"Email"      

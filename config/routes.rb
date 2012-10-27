@@ -34,6 +34,7 @@ InitialRelease::Application.routes.draw do
     get :start    
   end
 
+  resources :photo_prices
   resources :chains
   resources :products
   resources :discussions do

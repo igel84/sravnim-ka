@@ -1,4 +1,34 @@
 ru:
+  activerecord:
+    models:
+      user: 'Пользователь'
+    attributes:
+      user:
+        email: ''
+        password: 'Пароль'
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: 'Данный электронный ящик уже используется'
+            password:
+              blank: 'не должен быть пустым'
+              confirmation: 'необходимо указать 2 раза'
+  photo_prices:
+    create:
+      success_title: 'Спасибо'
+      error_title: 'Что-то пошло не так!'
+      success_body: 'Кассовый чек, добавленный Вами поступил на обработку и в самое ближайшее время информация по нему будет доступна на сайте.'
+      error_body: 'Убедитесь пожалуйста, что файл исправен.'
+      registration: 'Зарегистрируйтесь на нашем сайте и учавствуйте в розыгрыше призов'
+      registration_link: 'Регистрация на сайте'
+  number:
+    human:
+      storage_units:
+        units:
+          byte: 'мегабайт'
+        format: 'мегабайт'
   views:
     pagination:
       first: "&laquo;"

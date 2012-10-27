@@ -1,0 +1,22 @@
+:javascript
+  //function getFile(){ document.getElementById("upfile").click(); }
+  $(document).ready(function() { 
+    $('#photo-price-file').click(function(){ $('#upfile').click(); return false; });
+    $('body').img_upload(); 
+  });
+%legend Закачать кассовый чек магазина
+= form_for PhotoPrice.new do |f|
+  = hidden_field_tag 'photo_price[user_id]', current_user.id if current_user
+  .hidden
+    = f.file_field :photo, id: 'upfile'
+  = f.text_area :user_comment, placeholder: 'необязательный комментарий ...', class: 'span12', style: 'height:100px'
+  %button.btn.btn-large.btn-block.btn-info#photo-price-file{style: 'margin-left:0'}
+    %i.icon-list.icon-white
+    добавить файл
+    %script{id:"template-upload", type:"text/x-tmpl"}
+      %div.upload.span2{style: 'display:block;position:relative;top:10px;left:10px;'}
+  %br/  
+  %p.muted.pull-right файл должен быть в формате .png .jpg .jpeg или .bmp
+  .clearfix
+  %p.muted.pull-right размер файла не должен превышать 1Mb
+.modal.hide.fade

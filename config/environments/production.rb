@@ -2,8 +2,9 @@ InitialRelease::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
-  #config.cache_classes = true
-  config.cache_classes = false
+  config.cache_classes = true
+  #for many db
+  #config.cache_classes = false
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
