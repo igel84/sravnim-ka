@@ -1,17 +1,26 @@
 class PhotoPricesController < ApplicationController
   before_filter :check_admin, except: [:index, :new, :create]
 
-  def index
+  def new
     if current_user && current_user.admin?
-      @photo_prices = PhotoPrice.all
+      @photo_prices = PhotoPrice.all.order('created_at')
     elsif current_user
-      @photo_prices = current_user.photo_prices
+      @photo_prices = current_user.photo_prices.order('created_at DESC')
     else
-      redirect_to new_photo_price_url
-    end        
+      @photo_prices = []
+      #redirect_to new_photo_price_url
+    end   
   end
 
   def create
+    if current_user && current_user.admin?
+      @photo_prices = PhotoPrice.all.order('created_at DESC')
+    elsif current_user
+      @photo_prices = current_user.photo_prices.order('created_at DESC')
+    else
+      @photo_prices = []
+      #redirect_to new_photo_price_url
+    end 
     @photo_price = PhotoPrice.new(params[:photo_price])
     @photo_price.save
   end

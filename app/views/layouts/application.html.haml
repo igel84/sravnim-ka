@@ -26,23 +26,24 @@
                   -#%li.divider-vertical
                   %li.dropdown
                     %a.dropdown-toggle{:"data-toggle" => "dropdown", :href => "#"}
+                      %i.icon-flag
                       = @current_city == nil ? 'Выберите город' : @current_city.alias
                       %b.caret
                     %ul.dropdown-menu
                       - City.all.each do |city|
                         %li
                           = link_to city.alias, root_url(subdomain: city.name)
-                  %li.divider-vertical
+                  -#%li.divider-vertical
                   %li{class: "#{controller_name == 'cities' && action_name == 'index' ? 'active' : ''}"}
                     = link_to url_for(controller: 'cities', action: 'index', subdomain: false), title: 'Переход на главную страницу сайта sravnim-ka', rel: "tooltip", :'data-placement' => 'right'  do
                       %i.icon-home
                       Главная                      
-                  %li.divider-vertical
+                  -#%li.divider-vertical
                   %li
                     = link_to discussions_path, title: 'Вопросы, ответы, обсуждения', rel: "tooltip", :'data-placement' => 'right' do
                       %i.icon-question-sign
                       Ответы на вопросы
-                  %li.divider-vertical
+                  -#%li.divider-vertical
                   %li.dropdown
                     %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
                       Сотрудничество
@@ -57,9 +58,10 @@
                           %i.icon-upload
                           Добавить чек
                 %ul.nav.pull-right
-                  %li.divider-vertical
+                  -#%li.divider-vertical
                   %li.dropdown
                     %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      %i.icon-wrench
                       Личный кабинет
                       %b.caret
                     %ul.dropdown-menu

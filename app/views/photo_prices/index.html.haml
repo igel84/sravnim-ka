@@ -1,7 +1,0 @@
-%table.table.table-striped
-  - @photo_prices.each do |photo_price|
-    %tr
-      %td= photo_price.user_comment
-      %td
-        = link_to photo_price, class: 'btn btn-danger pull-right', style: 'width:20px;border-radius:0', :confirm => 'Вы уверены?', :method => :delete do
-          %i.icon-trash.icon-white

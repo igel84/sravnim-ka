@@ -1,0 +1,16 @@
+%table.table.table-hover
+  - @photo_prices.each do |photo_price|
+    %tr
+      %td.span2
+        - if photo_price.read == false
+          %span.label не прочитано
+        - else
+          = content_tag(:span, 'принят', class:'label label-success') if photo_price.assign == true
+          = content_tag(:span, 'не принят', class:'label label-important') if photo_price.assign == false
+      %td.span3= photo_price.created_at.strftime("%d.%m.%Yг. %H:%M")
+      -#%td= image_tag photo_price.photo.url(:thumb)
+      %td= truncate(photo_price.user_comment, length: 50, ommission: '...')
+      - if current_user && current_user.admin?
+        %td
+          = link_to photo_price, class: 'btn btn-danger pull-right', style: 'width:20px;border-radius:0', :confirm => 'Вы уверены?', :method => :delete do
+            %i.icon-trash.icon-white
