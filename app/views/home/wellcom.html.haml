@@ -1,58 +1,51 @@
-!!!
-%html{:xmlns => "http://www.w3.org/1999/xhtml"}
-  %head
-    %title Быстрый старт. Размещение интерактивной карты на странице
-    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
-    %script{:src => "http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU", :type => "text/javascript"}
-    %script{:src => "http://yandex.st/jquery/1.6.4/jquery.min.js", :type => "text/javascript"}
-    :javascript
-      ymaps.ready(init);
-      var myMap, 
-          myPlacemark;
+%script{:src => "http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU", :type => "text/javascript"}
+%script{:src => "http://yandex.st/jquery/1.6.4/jquery.min.js", :type => "text/javascript"}
+:javascript
+  ymaps.ready(init);
+  var myMap, 
+      myPlacemark;
 
-      function init(){ 
-          myMap = new ymaps.Map ("map", {
-              center: [51.664768,39.178851],
-              zoom: 12
-          });           
-          myPlacemark = new ymaps.Placemark([51.655413,39.244383], {
-              content: 'мой дом',
-              balloonContent: 'Ленинский пр-т, 82'
-          });          
-          myMap.geoObjects.add(myPlacemark);
+  function init(){ 
+      myMap = new ymaps.Map ("map", {
+          center: [51.664768,39.178851],
+          zoom: 12
+      });           
+      myPlacemark = new ymaps.Placemark([51.655413,39.244383], {
+          content: 'мой дом',
+          balloonContent: '<span style="color:red">мой дом</span><br />Ленинский пр-т, 82'
+      });          
+      myPlacemark2 = new ymaps.Placemark([51.663687,39.182563], {
+          content: 'мой дом',
+          balloonContent: '<span style="color:red">здесь работа</span><br />Свободы, 75'
+      });                    
+      
+      myMap.geoObjects.add(myPlacemark);
+      myMap.geoObjects.add(myPlacemark2);
 
-          //зум
-          myMap.controls.add('zoomControl');
-          myMap.behaviors.enable('scrollZoom');
-          //поиск
-          myMap.controls.add('searchControl');
-          
-          /* При щелчке на карте показывается балун со значениями координат в месте клика */
-          myMap.events.add("click",
-              function(e) {
-                  myMap.balloon.open(
-                      // Позиция балуна
-                      e.get("coordPosition"), {
-                          // Свойства балуна:
-                          // контент балуна
-                          contentBody: "Значение: " +
-                          e.get("coordPosition")
-                      }   
-                  )
-              }
-          );
+      //зум
+      myMap.controls.add('zoomControl');
+      myMap.behaviors.enable('scrollZoom');
+      //поиск
+      myMap.controls.add('searchControl');
+      
+      /* При щелчке на карте показывается балун со значениями координат в месте клика */
+      myMap.events.add("click",
+          function(e) {
+              myMap.balloon.open(
+                  // Позиция балуна
+                  e.get("coordPosition"), {
+                      // Свойства балуна:
+                      // контент балуна
+                      contentBody: "Значение: " +
+                      e.get("coordPosition")
+                  }   
+              )
+          }
+      );
 
-          myMap.events.add('click', function (e) {
-              //alert('Событие на карте'); // Возникнет при щечке на карте, но не на маркере.
-              //alert(e.get('domEvent').get('position'));
-              alert(e.getGeoPoint());
-          });
-
-          myPlacemark.events.add('click', function (e) {
-            alert('sdf');
-            //alert(e.get('domEvent').originalEvent.pageX);
-            // Вместо alert(e.get('domEvent').get('pageX'));
-          });      
-      }
-  %body
-    #map{:style => "width: 600px; height: 400px"}
+      myPlacemark.events.add('click', function (e) {
+        //alert('щелчок по объекту');
+      });      
+  }
+#map{:style => "width: 600px; height: 400px"}
+= link_to 'set', set_city_path, remote: true

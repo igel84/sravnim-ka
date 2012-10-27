@@ -6,6 +6,7 @@ InitialRelease::Application.routes.draw do
   resources :sessions
 
   get 'wellcom' => 'home#wellcom'
+  get 'set_city' => 'home#set_city', as: 'set_city'
   
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
