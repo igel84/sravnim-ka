@@ -35,26 +35,26 @@ class ApplicationController < ActionController::Base
     def override_db
       @current_city = City.find_by_name(request.subdomain) 
       @current_city = City.find(params[:city_id]) if params[:city_id] #&& @current_city.nil?
-      @products = Product.all
-      @users = User.all
-      @chains = Chain.all
+      #@products = Product.all
+      #@users = User.all
+      #@chains = Chain.all
       #not_found unless @current_city
 
-      if @current_city
-        ActiveRecord::Base.clear_cache!
-        ActiveRecord::Base.establish_connection(
-            adapter: 'sqlite3',
-            database: "db/#{@current_city.name}.sqlite3",
-            pool: 5,
-            timeout: 5000
-        )      
-      elsif current_user
-        #
-      elsif request.subdomain == 'sravnim-ka'
-        #
-      else
-        #redirect_to root_url
-      end    
+      #if @current_city
+      #  ActiveRecord::Base.clear_cache!
+      #  ActiveRecord::Base.establish_connection(
+      #      adapter: 'sqlite3',
+      #      database: "db/#{@current_city.name}.sqlite3",
+      #      pool: 5,
+      #      timeout: 5000
+      #  )      
+      #elsif current_user
+      #  #
+      #elsif request.subdomain == 'sravnim-ka'
+      #  #
+      #else
+      #  #redirect_to root_url
+      #end    
     end
 
 end

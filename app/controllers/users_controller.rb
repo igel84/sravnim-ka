@@ -10,6 +10,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
+      if params[:photo_price]
+        @photo_price = PhotoPrice.find(params[:photo_price])
+        @photo_price.update_attributes(user_id: @user.id) if @photo_price.user_id == nil
+      end
       redirect_to root_url, :notice => "Вы успешно зарегистрировались на сайте"
     else
       render :new
@@ -18,6 +22,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @users = User.all if current_user && current_user.admin?
     redirect_to edit_user_path(current_user) if !current_user.admin? && @user != current_user
   end
 
@@ -46,7 +51,8 @@ class UsersController < ApplicationController
   def activate
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!
-      redirect_to(login_path, :notice => 'Активация прошла успешно')
+      current_user = @user      
+      redirect_to edit_user_path(current_user) #(login_path, :notice => 'Активация прошла успешно')
     else
       not_authenticated
     end

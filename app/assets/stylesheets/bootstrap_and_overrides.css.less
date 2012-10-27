@@ -31,6 +31,24 @@ body {
 // Example:
 //@linkColor: #ff0000;
 
+//@navbarBackground: #c4c5fe;
+
+.navbar-inner {
+  background-color: #c4c5fe; /* fallback color, place your own */
+
+  /* Gradients for modern browsers, replace as you see fit */
+  background-image: -moz-linear-gradient(top, #c4c5fe, #fff);
+  background-image: -ms-linear-gradient(top, #c4c5fe, #fff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#c4c5fe), to(#fff));
+  background-image: -webkit-linear-gradient(top, #c4c5fe, #fff);
+  background-image: -o-linear-gradient(top, #c4c5fe, #fff);
+  background-image: linear-gradient(top, #c4c5fe, #fff);
+  background-repeat: repeat-x;
+
+  /* IE8-9 gradient filter */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#222222', GradientType=0);
+}
+
 @gridGutterWidth: 40px;
 
 @gridColumnWidth1200: 50px;

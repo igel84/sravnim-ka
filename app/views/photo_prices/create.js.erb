@@ -1,0 +1,10 @@
+<% if @photo_price.new_record? %>
+  $('.modal').html("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h3><%= t('.error_title') %></h3></div><div class='modal-body'><p><%= t('.error_body') %></p></div>");
+<% else %>
+  <% if current_user %>
+    $('.modal').html("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h3><%= t('.success_title') %></h3></div><div class='modal-body'><p><%= t('.success_body') %></p></div>");
+  <% else %>
+    $('.modal').html("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h3><%= t('.success_title') %></h3></div><div class='modal-body'><p><%= t('.registration') %></p><p><a href='/signup?photo_price=<%= @photo_price.id %>'><%= t('.registration_link') %></a></p></div>");
+  <% end %>
+<% end %>
+$('.modal').modal();

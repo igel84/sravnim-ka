@@ -21,9 +21,9 @@
                   %span.icon-bar
                   %span.icon-bar
                   %span.icon-bar
-                = link_to "Сравним-ка", url_for(controller: 'cities', action: 'index', subdomain: false), class: 'brand'
+                -#= link_to "Сравним-ка", url_for(controller: 'cities', action: 'index', subdomain: false), class: 'brand'
                 %ul.nav
-                  %li.divider-vertical
+                  -#%li.divider-vertical
                   %li.dropdown
                     %a.dropdown-toggle{:"data-toggle" => "dropdown", :href => "#"}
                       = @current_city == nil ? 'Выберите город' : @current_city.alias
@@ -34,10 +34,28 @@
                           = link_to city.alias, root_url(subdomain: city.name)
                   %li.divider-vertical
                   %li{class: "#{controller_name == 'cities' && action_name == 'index' ? 'active' : ''}"}
-                    = link_to 'главная', url_for(controller: 'cities', action: 'index', subdomain: false)
+                    = link_to url_for(controller: 'cities', action: 'index', subdomain: false), title: 'Переход на главную страницу сайта sravnim-ka', rel: "tooltip", :'data-placement' => 'right'  do
+                      %i.icon-home
+                      Главная                      
                   %li.divider-vertical
-                  %li= link_to 'ответы на вопросы', discussions_path, title: 'Вопросы, ответы, обсуждения', rel: "tooltip", :'data-placement' => 'right'
+                  %li
+                    = link_to discussions_path, title: 'Вопросы, ответы, обсуждения', rel: "tooltip", :'data-placement' => 'right' do
+                      %i.icon-question-sign
+                      Ответы на вопросы
                   %li.divider-vertical
+                  %li.dropdown
+                    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      Сотрудничество
+                      %b.caret
+                    %ul.dropdown-menu
+                      %li
+                        = link_to new_promotion_path do
+                          %i.icon-briefcase
+                          Разместить рекламу
+                      %li
+                        = link_to new_photo_price_path do
+                          %i.icon-upload
+                          Добавить чек
                 %ul.nav.pull-right
                   %li.divider-vertical
                   %li.dropdown
@@ -49,7 +67,7 @@
                         %li
                           = link_to edit_user_path(current_user) do
                             %i.icon-user
-                            профиль
+                            Профиль
                         -#%li
                         -#  = link_to '' do
                         -#    %i.icon-envelope
@@ -57,7 +75,7 @@
                         %li
                           = link_to promotions_path do
                             %i.icon-eye-open
-                            реклама
+                            Реклама
                         -#%li
                         -#  = link_to '' do
                         -#   %i.icon-globe
@@ -65,10 +83,16 @@
                         %li
                           = link_to logout_path do
                             %i.icon-remove-circle
-                            выход                         
+                            Выход                         
                       - else
-                        %li= link_to "вход", login_path
-                        %li= link_to "регистрация", signup_path  
+                        %li
+                          = link_to login_path do
+                            %i.icon-user
+                            Вход
+                        %li
+                          = link_to signup_path do
+                            %i.icon-asterisk
+                            Регистрация
       .row
         .span12= image_tag 'top.jpg', width:940, hight:80
       .row-fluid   

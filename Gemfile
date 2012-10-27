@@ -9,6 +9,7 @@ gem 'yaml_db', git:'git://github.com/lostapathy/yaml_db.git'
 
 gem 'sqlite3'
 gem 'mysql2'#, '> 0.3'
+gem 'db-charmer', :require => 'db_charmer'
 
 #gem 'subdomain-fu', :git => "git://github.com/mbleigh/subdomain-fu.git"
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121022185613) do
+ActiveRecord::Schema.define(:version => 20121027091156) do
 
   create_table "areas", :force => true do |t|
     t.string   "name"
@@ -106,6 +106,20 @@ ActiveRecord::Schema.define(:version => 20121022185613) do
   add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
 
+  create_table "photo_prices", :force => true do |t|
+    t.integer  "user_id"
+    t.boolean  "read",               :default => false
+    t.boolean  "assign",             :default => false
+    t.string   "user_comment"
+    t.string   "admin_comment"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.string   "photo_file_name"
+    t.datetime "photo_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "products", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -136,7 +150,7 @@ ActiveRecord::Schema.define(:version => 20121022185613) do
     t.integer  "item"
     t.string   "table"
     t.integer  "month",      :limit => 2
-    t.integer  "year",       :limit => 5
+    t.integer  "year",       :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -157,11 +171,11 @@ ActiveRecord::Schema.define(:version => 20121022185613) do
   create_table "shop_products", :force => true do |t|
     t.integer  "shop_id"
     t.integer  "product_id"
-    t.decimal  "price"
+    t.decimal  "price",      :precision => 10, :scale => 0
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "volume",     :default => 0
+    t.integer  "volume",                                    :default => 0
   end
 
   create_table "shops", :force => true do |t|

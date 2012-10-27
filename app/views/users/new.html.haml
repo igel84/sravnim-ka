@@ -7,13 +7,14 @@
         - for message in @user.errors.full_messages
           %li= message
   .control-group
+    = hidden_field_tag 'photo_price', params[:photo_price] if params[:photo_price]
     %label.control-label{:for => "inputEmail"} Email
     .controls
       = f.text_field :email, id:'inputEmail', placeholder:"Email"      
   .control-group
     %label.control-label{:for => "inputCity"} Город
     .controls
-      = select_tag "user[city_id]", options_from_collection_for_select(City.all, "id", "name"), :prompt => "выберите город"
+      = select_tag "user[city_id]", options_from_collection_for_select(City.all, "id", "alias"), :prompt => "выберите город"
   .control-group
     %label.control-label{:for => "inputPassword"} Пароль
     .controls
