@@ -26,3 +26,6 @@
   .control-group
     .controls
       = f.submit 'Зарегистрировать', class:'btn'
+%script{src:"http://ulogin.ru/js/ulogin.js"}
+%a{href:"#", id:"uLogin", 'x-ulogin-params'=>"display=window;fields=first_name,last_name;redirect_uri=http%3A%2F%2Fsravnim-ka.ru"}
+  %img{src:"http://ulogin.ru/img/button.png", width:187, height:30, alt:"МультиВход"}
