@@ -6,15 +6,16 @@
     %meta{:name=>"description", :content=>"сравнение цен на продовольственные товары #{@current_city.alias if @current_city}"}
     %meta{:name=>"keywords", :content=>"цены сравнить товар #{@current_city.alias if @current_city}"}
     %meta{:name=>"author", :content=>"mlip.ru"}
-    %link{:rel=>"shortcut icon", :href=>'/assets/favicon.ico'}
+    %meta{name:'loginza-verification', content:'2eae86a493ca7f6c1595c3e87a3bb67f'}
+    %link{:rel=>"shortcut icon", :href=>'/assets/favicon.ico'}    
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
-  %body
+  %body{style:'background:url(/assets/top.jpg) 42px 42px repeat-x;'}
     .container
       .row
         .span12
-          .navbar.navbar-static-top
+          .navbar.navbar-fixed-top
             .navbar-inner
               .container
                 %a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
@@ -46,6 +47,7 @@
                   -#%li.divider-vertical
                   %li.dropdown
                     %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                      %i.icon-random
                       Сотрудничество
                       %b.caret
                     %ul.dropdown-menu
@@ -96,7 +98,7 @@
                             %i.icon-asterisk
                             Регистрация
       .row
-        .span12{style:'background:url(/assets/top.jpg) repeat-x;text-align:center;'}= image_tag 'logo.png', width:280, hight:70, style: 'margin: 2px auto;'
+        .span12{style:'text-align:center;margin-top:42px;'}= image_tag 'logo.png', width:280, hight:70, style: 'margin: 2px auto;'
       .row-fluid   
         .span10
           %br/

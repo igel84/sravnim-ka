@@ -5,8 +5,8 @@ class CitiesController < ApplicationController
 
   #time for Voronezh
   def index
-    @current_city = City.find(1)
-    redirect_to controller: 'cities', action: 'show', subdomain: "voronezh" 
+    #@current_city = City.find(1)
+    #redirect_to controller: 'cities', action: 'show', subdomain: false, city_id:"voronezh" 
   end
 
   def show

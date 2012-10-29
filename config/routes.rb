@@ -67,6 +67,9 @@ InitialRelease::Application.routes.draw do
     member do
       get :activate
     end
+    collection do 
+      post :sign_with_social
+    end
   end
 
   

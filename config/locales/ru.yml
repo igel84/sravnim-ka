@@ -6,6 +6,7 @@ ru:
       user:
         email: ''
         password: 'Пароль'
+        city: ''
     errors:
       models:
         user:

@@ -1,3 +1,4 @@
+#encoding: utf-8
 class User < ActiveRecord::Base
   rolify
   establish_connection "production"  
@@ -23,6 +24,12 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :on => :create
   validates_presence_of :email
   validates_uniqueness_of :email
+
+  validate :check_city
+
+  def check_city
+    errors.add("city","Ошибочно указан город") if self.city_id && City.where(:id => self.city_id) == []
+  end
 
   def to_s
   	self.email	

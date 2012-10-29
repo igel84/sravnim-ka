@@ -21,7 +21,7 @@
     .control-group
       %label.control-label{:for => "inputCity"} Город
       .controls
-        = select_tag "user[city_id]", options_from_collection_for_select(City.all, "id", "alias"), :prompt => @user.city_id != nil ? @user.city.name : 'выберите город', class: 'span8'    
+        = select_tag "user[city_id]", options_from_collection_for_select(City.all, "id", "alias"), :prompt => @user.city_id != nil ? (@user.city == nil ? ' ' : @user.city.name) : 'выберите город', class: 'span8'    
         = f.submit 'сохранить', class:'btn pull-right'
   .well.well-small
     %legend Смена пароля
@@ -48,6 +48,7 @@
           %td= user
           %td= user.chain.name if user.seller?
           %td= link_to 'изменить аккаунт', edit_user_path(user)
+          %td= link_to 'удалить', user, method: 'delete', confirm: 'Вы уверены?'
           %td= link_to 'изменить роли', [user, :roles]
 - if current_user.admin?
   .well.well-small

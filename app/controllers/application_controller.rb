@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_city
-    @city = City.find(session['city']) if session['city']
+    #@city = City.find(session['city']) if session['city']
   end
 
   private

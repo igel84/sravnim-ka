@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121027091156) do
+ActiveRecord::Schema.define(:version => 20121029181932) do
 
   create_table "areas", :force => true do |t|
     t.string   "name"
@@ -208,6 +208,9 @@ ActiveRecord::Schema.define(:version => 20121027091156) do
     t.string   "activation_state"
     t.string   "activation_token"
     t.datetime "activation_token_expires_at"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "authentication_token"
   end
 
   add_index "users", ["activation_token"], :name => "index_users_on_activation_token"

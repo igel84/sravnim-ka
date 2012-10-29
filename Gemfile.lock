@@ -110,6 +110,8 @@ GEM
       less (~> 2.2.0)
     libv8 (3.3.10.4)
     log4r (1.1.10)
+    loginza (0.2.0)
+      json
     mail (2.3.0)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -224,6 +226,7 @@ DEPENDENCIES
   jquery-fileupload-rails
   jquery-rails
   kaminari
+  loginza
   mysql2
   paperclip!
   rails (= 3.1.1)

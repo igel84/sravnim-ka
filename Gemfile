@@ -18,6 +18,7 @@ gem 'therubyracer'
 gem 'rake'
 gem 'haml-rails'
 
+gem 'loginza'
 gem 'sorcery'
 gem 'roo'
 gem 'kaminari'
