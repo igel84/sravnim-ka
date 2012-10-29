@@ -10,7 +10,7 @@ class CitiesController < ApplicationController
   end
 
   def show
-    if @current_city.id != 1
+    if @current_city && @current_city.id != 1
       render 'error'
     end
 

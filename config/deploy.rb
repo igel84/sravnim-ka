@@ -90,7 +90,7 @@ end
 #[ -f "/var/run/unicorn/sravnim-ka.igel84.pid" ] && kill -QUIT `cat "/var/run/unicorn/sravnim-ka.igel84.pid"`
 #start
 #!!!!! current dir name
-#ln -s /home/hosting_igel84/projects/sravnim-ka/releases/20121023102422 /home/hosting_igel84/projects/sravnim-ka/current;cd /home/hosting_igel84/projects/sravnim-ka/current
+#ln -s /home/hosting_igel84/projects/sravnim-ka/releases/20121029085208 /home/hosting_igel84/projects/sravnim-ka/current;cd /home/hosting_igel84/projects/sravnim-ka/current
 #bundle exec unicorn_rails -Dc "/etc/unicorn/sravnim-ka.igel84.rb"
 
 # - for unicorn - #
