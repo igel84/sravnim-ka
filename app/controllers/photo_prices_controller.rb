@@ -3,7 +3,7 @@ class PhotoPricesController < ApplicationController
 
   def new
     if current_user && current_user.admin?
-      @photo_prices = PhotoPrice.all.order('created_at')
+      @photo_prices = PhotoPrice.order('created_at')
     elsif current_user
       @photo_prices = current_user.photo_prices.order('created_at DESC')
     else
