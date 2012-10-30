@@ -1,5 +1,5 @@
 class City < ActiveRecord::Base
-  establish_connection "production"
+  #establish_connection "production"
   resourcify
 
   default_scope order('alias')

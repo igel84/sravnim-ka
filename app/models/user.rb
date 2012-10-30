@@ -1,7 +1,7 @@
 #encoding: utf-8
 class User < ActiveRecord::Base
   rolify
-  establish_connection "production"  
+  #establish_connection "production"  
   
   rolify :before_add => :before_add_method
 

@@ -1,5 +1,5 @@
 class Promotion < ActiveRecord::Base
-  establish_connection "production"
+  #establish_connection "production"
 
   before_create :init_key
   #after_create :destroy_original

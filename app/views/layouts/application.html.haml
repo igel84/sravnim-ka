@@ -11,6 +11,11 @@
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
+    :javascript
+      $(document).ready(function() { 
+        $('li.dropdown>a').bind('mouseenter', function(){$(this).click();});
+        $('li.dropdown>a').bind('mouseleave', function(){$(this).click();});
+      });
   %body{style:'background:url(/assets/top.jpg) 42px 42px repeat-x;'}
     .container
       .row
