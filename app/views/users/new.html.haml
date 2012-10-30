@@ -28,13 +28,12 @@
       = f.submit 'Зарегистрировать', class:'btn btn-primary btn-large span6'
 %h5 
   Также Вы можете зайти на сайт используя социальные сети: 
-  = loginza_button_tag(users_url, :provider => :google) do
-    .loginza
-      %img{src:"http://loginza.ru/img/providers/google.png", alt:"Google", title:"Google Accounts"}
-      %img{src:"http://loginza.ru/img/providers/twitter.png", alt:"Twitter", title:"Twitter"}
-      %img{src:"http://loginza.ru/img/providers/yandex.png", alt:"Yandex", title:"Yandex"}
-      %img{src:"http://loginza.ru/img/providers/myopenid.png", alt:"MyOpenID", title:"MyOpenID"}
-      %img{src:"http://loginza.ru/img/providers/openid.png", alt:"OpenID", title:"OpenID"}
   %script{src:"http://ulogin.ru/js/ulogin.js"}
-  %a{href:"#", id:"uLogin", 'x-ulogin-params'=>"display=window;fields=first_name,last_name;redirect_uri=http%3A%2F%2Fsravnim-ka.com:3000/users/sign_with_social"}
-    %img{src:"http://ulogin.ru/img/button.png", width:187, height:30, alt:"МультиВход"}
+  #uLogin{'x-ulogin-params'=>"display=panel;fields=first_name,last_name,email;providers=vkontakte,odnoklassniki,mailru,facebook;redirect_uri=http%3A%2F%2Fsravnim-ka.com:3000/users/sign_with_social", style: 'inline-block'}
+  -#= loginza_button_tag(users_url, :provider => :google) do
+  -#  .loginza
+  -#    %img{src:"http://loginza.ru/img/providers/google.png", alt:"Google", title:"Google Accounts"}
+  -#    %img{src:"http://loginza.ru/img/providers/twitter.png", alt:"Twitter", title:"Twitter"}
+  -#    %img{src:"http://loginza.ru/img/providers/yandex.png", alt:"Yandex", title:"Yandex"}
+  -#    %img{src:"http://loginza.ru/img/providers/myopenid.png", alt:"MyOpenID", title:"MyOpenID"}
+  -#    %img{src:"http://loginza.ru/img/providers/openid.png", alt:"OpenID", title:"OpenID"}  

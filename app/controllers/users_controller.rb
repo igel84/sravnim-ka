@@ -41,6 +41,8 @@ class UsersController < ApplicationController
     else
       @user = User.new(params[:user])
       if @user.save
+        #отправка сообщения для активации
+        UserMailer.activation_needed_email(@user).deliver        
         if params[:photo_price]
           @photo_price = PhotoPrice.find(params[:photo_price])
           @photo_price.update_attributes(user_id: @user.id) if @photo_price.user_id == nil
@@ -89,7 +91,10 @@ class UsersController < ApplicationController
         end
       end
       #авторизируем найденного или нового созданного пользователя в системе
-      sign_in @user, :bypass => true
+      #sign_in @user, :bypass => true
+      #login(@user.email, "password", true)
+      auto_login(@user)
+      current_user = @user
       redirect_to root_path
     end
   end

@@ -17,4 +17,5 @@
       %br/
       %button.btn.btn-success{:type => "submit"} Вход
       = link_to 'Регистрация', signup_path, class:'btn'
-      
+%script{src:"http://ulogin.ru/js/ulogin.js"}
+#uLogin{'x-ulogin-params'=>"display=panel;fields=first_name,last_name,email;providers=vkontakte,odnoklassniki,mailru,facebook;redirect_uri=http%3A%2F%2Fsravnim-ka.com:3000/users/sign_with_social", style: 'inline-block'}      
